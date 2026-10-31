@@ -16,12 +16,15 @@ export default class TopBarAllMonitorsExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
         this._panels = new Map();
+        this._lastPanelHeight = 0;
         this._monitorsChangedId = Main.layoutManager.connect(
             'monitors-changed', () => this._syncPanels());
         this._panelAllocationId = Main.panel.connect(
             'notify::allocation', () => this._queuePanelGeometryUpdate());
         this._panelVisibilityId = Main.panel.connect(
-            'notify::visible', () => this._updatePanels());
+            'notify::visible', () => this._queuePanelVisibilityUpdate());
+        this._fullscreenChangedId = global.display.connect(
+            'in-fullscreen-changed', () => this._queuePanelVisibilityUpdate());
         this._extensionStateChangedId = Main.extensionManager.connect(
             'extension-state-changed', () => {
                 this._queueMirrorRefresh(150);
@@ -53,6 +56,7 @@ export default class TopBarAllMonitorsExtension extends Extension {
         Main.layoutManager.disconnect(this._monitorsChangedId);
         Main.panel.disconnect(this._panelAllocationId);
         Main.panel.disconnect(this._panelVisibilityId);
+        global.display.disconnect(this._fullscreenChangedId);
         Main.extensionManager.disconnect(this._extensionStateChangedId);
         Main.sessionMode.disconnect(this._sessionUpdatedId);
         this._settings.disconnect(this._settingsChangedId);
@@ -60,6 +64,10 @@ export default class TopBarAllMonitorsExtension extends Extension {
         if (this._panelUpdateId) {
             GLib.source_remove(this._panelUpdateId);
             this._panelUpdateId = 0;
+        }
+        if (this._panelVisibilityUpdateId) {
+            GLib.source_remove(this._panelVisibilityUpdateId);
+            this._panelVisibilityUpdateId = 0;
         }
 
         for (const {box, id} of this._primaryPanelBoxSignals)
@@ -124,7 +132,7 @@ export default class TopBarAllMonitorsExtension extends Extension {
 
     _updatePanels() {
         const monitors = Main.layoutManager.monitors;
-        const panelHeight = Main.panel.height;
+        const panelHeight = this._getStablePanelHeight();
 
         for (const [index, panelParts] of this._panels) {
             const monitor = monitors[index];
@@ -132,9 +140,39 @@ export default class TopBarAllMonitorsExtension extends Extension {
                 continue;
 
             panelParts.panelBox.set_position(monitor.x, monitor.y);
-            panelParts.panelBox.set_size(monitor.width, panelHeight);
-            panelParts.panel.set_size(monitor.width, panelHeight);
-            panelParts.panelBox.visible = Main.panel.visible;
+            if (panelHeight > 0) {
+                panelParts.panelBox.set_size(monitor.width, panelHeight);
+                panelParts.panel.set_size(monitor.width, panelHeight);
+            } else {
+                panelParts.panelBox.set_width(monitor.width);
+                panelParts.panel.set_width(monitor.width);
+            }
+        }
+
+        this._updatePanelVisibility();
+    }
+
+    _getStablePanelHeight() {
+        const allocatedHeight = Main.panel.height;
+        if (Number.isFinite(allocatedHeight) && allocatedHeight > 0)
+            this._lastPanelHeight = allocatedHeight;
+
+        if (this._lastPanelHeight > 0)
+            return this._lastPanelHeight;
+
+        const [, naturalHeight] = Main.panel.get_preferred_height(-1);
+        return Number.isFinite(naturalHeight) ? Math.max(0, naturalHeight) : 0;
+    }
+
+    _updatePanelVisibility() {
+        const monitors = Main.layoutManager.monitors;
+        for (const [index, panelParts] of this._panels) {
+            const monitor = monitors[index];
+            if (!monitor)
+                continue;
+
+            const fullscreenOnMonitor = global.window_group.visible && monitor.inFullscreen;
+            panelParts.panelBox.visible = Main.panel.visible && !fullscreenOnMonitor;
         }
     }
 
@@ -145,6 +183,17 @@ export default class TopBarAllMonitorsExtension extends Extension {
         this._panelUpdateId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
             this._panelUpdateId = 0;
             this._updatePanels();
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _queuePanelVisibilityUpdate() {
+        if (this._panelVisibilityUpdateId)
+            return;
+
+        this._panelVisibilityUpdateId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            this._panelVisibilityUpdateId = 0;
+            this._updatePanelVisibility();
             return GLib.SOURCE_REMOVE;
         });
     }
