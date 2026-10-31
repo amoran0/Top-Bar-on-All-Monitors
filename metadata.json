@@ -1,0 +1,8 @@
+{
+  "uuid": "topbarallmonitors@local",
+  "name": "Top Bar on All Monitors",
+  "description": "Show a GNOME Shell top bar on every connected monitor.",
+  "shell-version": ["51"],
+  "settings-schema": "org.gnome.shell.extensions.topbarallmonitors",
+  "version": 1
+}

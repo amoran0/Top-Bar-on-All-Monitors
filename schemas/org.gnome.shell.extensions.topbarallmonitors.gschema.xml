@@ -1,0 +1,14 @@
+<schemalist>
+  <schema id="org.gnome.shell.extensions.topbarallmonitors" path="/org/gnome/shell/extensions/topbarallmonitors/">
+    <key name="hidden-indicators" type="as">
+      <default>[]</default>
+      <summary>Indicators hidden on secondary monitors</summary>
+      <description>Panel indicator roles that should not be shown on secondary monitors.</description>
+    </key>
+    <key name="indicator-catalog" type="s">
+      <default>'[]'</default>
+      <summary>Available panel indicators</summary>
+      <description>Indicators discovered on the primary panel.</description>
+    </key>
+  </schema>
+</schemalist>

@@ -1,0 +1,10 @@
+# GNOME schema compiler output
+schemas/gschemas.compiled
+
+# Extension bundles and build output
+dist/
+*.shell-extension.zip
+
+# Editor and OS files
+.vscode/
+.DS_Store
