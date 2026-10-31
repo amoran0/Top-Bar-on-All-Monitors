@@ -1,4 +1,4 @@
-# Top Bar on All Monitors
+# Top Bar on All Monitors GNOME 51
 
 A GNOME Shell 51 extension that adds an interactive top bar to every secondary monitor. GNOME's original primary-monitor panel stays in place.
 
@@ -19,11 +19,9 @@ For the easiest installation, download the `topbarallmonitors@amoran0.shell-exte
 Alternatively, download the source archive from GitHub using **Code > Download ZIP**, then extract it. You can also clone the repository:
 
 ```sh
-git clone https://github.com/OWNER/topbar-gnome.git
+git clone https://github.com/amoran0/Top-Bar-on-All-Monitors.git
 cd topbar-gnome
 ```
-
-Replace `OWNER` with the GitHub account that hosts the project.
 
 ## Install a Release
 
@@ -44,7 +42,7 @@ Requirements: GNOME Shell 51, `gnome-extensions`, and `glib-compile-schemas`. Op
 sh scripts/install.sh
 ```
 
-The installer copies the extension to `~/.local/share/gnome-shell/extensions/topbarallmonitors@amoran0`, compiles its GSettings schema, and enables it. It does not require `sudo`.
+The installer copies the extension to `~/.local/share/gnome-shell/extensions/`, compiles its GSettings schema, and enables it. It does not require `sudo`.
 
 ## Preferences
 
