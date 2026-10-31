@@ -14,7 +14,7 @@ Indicators are mirrors, not independent instances of their extensions. Extension
 
 ## Download
 
-For the easiest installation, download the `topbarallmonitors@local.shell-extension.zip` asset from the project's **GitHub Releases** page.
+For the easiest installation, download the `topbarallmonitors@amoran0.shell-extension.zip` asset from the project's **GitHub Releases** page.
 
 Alternatively, download the source archive from GitHub using **Code > Download ZIP**, then extract it. You can also clone the repository:
 
@@ -30,8 +30,8 @@ Replace `OWNER` with the GitHub account that hosts the project.
 Requirements: GNOME Shell 51 and the `gnome-extensions` command. In a terminal, install the downloaded bundle and enable the extension:
 
 ```sh
-gnome-extensions install --force ~/Downloads/topbarallmonitors@local.shell-extension.zip
-gnome-extensions enable topbarallmonitors@local
+gnome-extensions install --force ~/Downloads/topbarallmonitors@amoran0.shell-extension.zip
+gnome-extensions enable topbarallmonitors@amoran0
 ```
 
 If the extension does not appear on Wayland, log out and back in.
@@ -44,14 +44,14 @@ Requirements: GNOME Shell 51, `gnome-extensions`, and `glib-compile-schemas`. Op
 sh scripts/install.sh
 ```
 
-The installer copies the extension to `~/.local/share/gnome-shell/extensions/topbarallmonitors@local`, compiles its GSettings schema, and enables it. It does not require `sudo`.
+The installer copies the extension to `~/.local/share/gnome-shell/extensions/topbarallmonitors@amoran0`, compiles its GSettings schema, and enables it. It does not require `sudo`.
 
 ## Preferences
 
 Open the extension preferences with:
 
 ```sh
-gnome-extensions prefs topbarallmonitors@local
+gnome-extensions prefs topbarallmonitors@amoran0
 ```
 
 The switches affect secondary monitors only; they do not hide indicators on the primary panel. The indicator list is discovered from the active extensions and updates as indicators are added or removed.
@@ -61,9 +61,9 @@ The switches affect secondary monitors only; they do not hide indicators on the 
 Install a newer Release over the current version:
 
 ```sh
-gnome-extensions disable topbarallmonitors@local
-gnome-extensions install --force ~/Downloads/topbarallmonitors@local.shell-extension.zip
-gnome-extensions enable topbarallmonitors@local
+gnome-extensions disable topbarallmonitors@amoran0
+gnome-extensions install --force ~/Downloads/topbarallmonitors@amoran0.shell-extension.zip
+gnome-extensions enable topbarallmonitors@amoran0
 ```
 
 If you installed from source, get the updated source files and run `sh scripts/install.sh` again.
@@ -71,8 +71,8 @@ If you installed from source, get the updated source files and run `sh scripts/i
 ## Uninstall
 
 ```sh
-gnome-extensions disable topbarallmonitors@local
-rm -rf ~/.local/share/gnome-shell/extensions/topbarallmonitors@local
+gnome-extensions disable topbarallmonitors@amoran0
+rm -rf ~/.local/share/gnome-shell/extensions/topbarallmonitors@amoran0
 ```
 
 ## Compatibility

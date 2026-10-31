@@ -1,5 +1,5 @@
 {
-  "uuid": "topbarallmonitors@local",
+  "uuid": "topbarallmonitors@amoran0",
   "name": "Top Bar on All Monitors",
   "description": "Show a GNOME Shell top bar on every connected monitor.",
   "shell-version": ["51"],

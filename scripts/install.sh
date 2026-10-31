@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-UUID="topbarallmonitors@local"
+UUID="topbarallmonitors@amoran0"
 EXTENSION_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/gnome-shell/extensions/$UUID"
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 SOURCE_DIR=$(dirname -- "$SCRIPT_DIR")
